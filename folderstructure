@@ -37,6 +37,4 @@ Tamilkidsstories/
 │   └── images/
 │       └── logo.png           # Static images
 │
-├── .htaccess                  # URL rewriting (slug routing)
-├── README.md                  # Project info
 └── tamilkidsstories.sql       # Database backup

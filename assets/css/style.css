@@ -1,0 +1,404 @@
+/* =========================
+   GLOBAL STYLES
+========================= */
+body {
+  font-family: 'Baloo 2', cursive;
+  background: #fff7e6;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  background: #ff9800;
+  color: white;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.navbar a {
+  color: white;
+  margin: 0 10px;
+  transition: 0.3s;
+}
+
+.navbar a:hover {
+  background: rgba(255,255,255,0.2);
+  padding: 6px 12px;
+  border-radius: 15px;
+}
+
+/* Hamburger Menu */
+.navbar-toggler {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: none; /* Hidden by default, shown on mobile */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.navbar-toggler span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.navbar-toggler.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar-toggler.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggler.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn {
+  background: #ff6f61;
+  padding: 12px 30px;
+  color: white;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  display: inline-block;
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: pulse 2s infinite;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 50px;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  border-radius: 25px;
+  margin: 20px;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 50%;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  color: #ff6f61;
+  margin-bottom: 20px;
+  animation: slideInLeft 1s ease-out;
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.hero-image img {
+  max-width: 420px;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* =========================
+   STORIES SECTION
+========================= */
+.stories-section {
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+  text-align: center;
+}
+
+.stories-section h2 {
+  font-size: 2.5rem;
+  color: #ff6f61;
+  margin-bottom: 40px;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.story-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.story-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.story-card img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.story-card h3 {
+  color: #ff6f61;
+  margin: 15px 0;
+}
+
+.story-card p {
+  padding: 0 15px 15px;
+  color: #555;
+}
+
+/* =========================
+   ABOUT SECTION
+========================= */
+.about-section {
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #fffbf0, #ffe4e1);
+}
+
+.about-cards {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.about-card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  width: 280px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.about-card:hover {
+  transform: translateY(-10px);
+}
+
+/* =========================
+   CONTACT SECTION
+========================= */
+.contact-section {
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #fffaf0, #ffe4e1);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 15px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+  background: #ff9800;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  margin: 0 10px;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: #ffe4e1;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* =========================
+   FILTER BAR & BADGES
+========================= */
+.filter-bar{
+  display:flex;
+  gap:15px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+
+.filter-bar select,
+.filter-bar button{
+  padding:10px 18px;
+  border-radius:25px;
+  border:1px solid #ccc;
+}
+
+.filter-bar button{
+  background:#6a7de8;
+  color:#fff;
+  border:none;
+}
+
+.badge{
+  background:#6a7de8;
+  color:#fff;
+  padding:3px 10px;
+  border-radius:14px;
+  font-size:12px;
+}
+
+.age-badge{
+  background:#ff9800;
+}
+
+.no-data{
+  text-align:center;
+  font-size:18px;
+}
+
+/* =========================
+   MOBILE RESPONSIVE + HAMBURGER
+========================= */
+@media (max-width: 768px) {
+
+  /* Hamburger visible on mobile */
+  .navbar-toggler {
+    display: flex;
+  }
+
+  /* Hide nav links initially */
+  .navbar .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #ff9800;
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Show nav links when hamburger is active */
+  .navbar .nav-links.show {
+    display: flex;
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  .navbar .nav-links a {
+    margin: 10px 0;
+  }
+
+  /* Slide down animation */
+  @keyframes slideDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* HERO */
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+
+  .hero-image img {
+    max-width: 280px;
+    margin-top: 25px;
+  }
+
+  /* Stories */
+  .story-card img {
+    height: 150px;
+  }
+
+  /* About */
+  .about-card {
+    width: 100%;
+  }
+
+  /* Story view */
+  .story-view {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .story-view h1 {
+    font-size: 2rem;
+  }
+
+  /* Filter bar stacks */
+  .filter-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-bar select,
+  .filter-bar button {
+    width: 100%;
+  }
+}

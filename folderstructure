@@ -1,0 +1,42 @@
+Tamilkidsstories/
+│
+├── index.php                  # Home page (categories / latest stories)
+├── category.php               # Stories by category
+├── story.php                  # Single story page (slug or id)
+├── contact.php                # Contact form
+├── favourites.php             # Favourite stories page
+│
+├── includes/
+│   ├── db.php                 # Database connection
+│   ├── header.php             # Common header
+│   ├── footer.php             # Common footer
+│   └── functions.php          # Helper functions (slug, etc.)
+│
+├── admin/
+│   ├── index.php              # Admin login
+│   ├── dashboard.php          # Admin dashboard
+│   ├── add-story.php          # Add new story
+│   ├── edit-story.php         # Edit story
+│   ├── delete-story.php       # Delete story
+│   ├── categories.php         # Manage categories
+│   ├── add-category.php       # Add category
+│   ├── edit-category.php      # Edit category
+│   ├── delete-category.php    # Delete category
+│   ├── contacts.php           # View contact messages
+│   └── logout.php             # Admin logout
+│
+├── uploads/
+│   ├── stories/               # Story images
+│   └── categories/            # Category images
+│
+├── assets/
+│   ├── css/
+│   │   └── style.css          # Main styles
+│   ├── js/
+│   │   └── main.js            # JavaScript
+│   └── images/
+│       └── logo.png           # Static images
+│
+├── .htaccess                  # URL rewriting (slug routing)
+├── README.md                  # Project info
+└── tamilkidsstories.sql       # Database backup

@@ -4,9 +4,9 @@ session_start();
 // Set timeout duration (in seconds)
 $timeout_duration = 600; // 10 minutes
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+/* ===== ADMIN AUTH CHECK ===== */
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
     exit;
 }
 

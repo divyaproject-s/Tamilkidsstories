@@ -1,4 +1,7 @@
 <?php
+
+// Login check removed for guest access
+
 include "includes/db.php";
 include "includes/header.php";
 
@@ -48,18 +51,23 @@ $cat_result = $conn->query("SELECT * FROM categories ORDER BY name ASC");
 </style>
 
 <section class="stories-section">
-<h2>📖 தமிழ் சிறுவர் கதைகள்</h2>
+  <h2>📖 தமிழ் சிறுவர் கதைகள்</h2>
 
-<div class="category-grid">
-<?php if($cat_result->num_rows > 0): ?>
-    <?php while($cat = $cat_result->fetch_assoc()): ?>
-        <a href="category.php?id=<?= $cat['id'] ?>" class="cat-card">
-            <img src="uploads/categories/<?= htmlspecialchars($cat['image']) ?>" alt="<?= htmlspecialchars($cat['name']) ?>">
-            <h4><?= htmlspecialchars($cat['name']) ?></h4>
-        </a>
-    <?php endwhile; ?>
-<?php endif; ?>
-</div>
+  <div class="category-grid">
+    <?php if($cat_result && $cat_result->num_rows > 0): ?>
+        <?php while($cat = $cat_result->fetch_assoc()): ?>
+            <a href="category.php?id=<?php echo (int)$cat['id']; ?>" class="cat-card">
+                <img 
+                  src="uploads/categories/<?php echo htmlspecialchars($cat['image']); ?>" 
+                  alt="<?php echo htmlspecialchars($cat['name']); ?>"
+                >
+                <h4><?php echo htmlspecialchars($cat['name']); ?></h4>
+            </a>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <p>No categories found.</p>
+    <?php endif; ?>
+  </div>
 </section>
 
 <?php include "includes/footer.php"; ?>

@@ -1,23 +1,27 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
-    exit;
-}
 include "../includes/db.php";
 
-// Delete message if 'delete_id' is set
-if (isset($_GET['delete_id'])) {
-    $delete_id = (int)$_GET['delete_id'];
-    $conn->query("DELETE FROM contacts WHERE id=$delete_id");
-    header("Location: messages.php"); // refresh page
+/* ===== ADMIN AUTH CHECK ===== */
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
     exit;
 }
 
-// Fetch all messages
+/* ===== DELETE MESSAGE WITH PREPARED STATEMENT ===== */
+if (isset($_GET['delete_id'])) {
+    $delete_id = (int)$_GET['delete_id'];
+    $stmt = $conn->prepare("DELETE FROM contacts WHERE id = ?");
+    $stmt->bind_param("i", $delete_id);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: messages.php");
+    exit;
+}
+
+/* ===== FETCH ALL MESSAGES ===== */
 $result = $conn->query("SELECT * FROM contacts ORDER BY created_at DESC");
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +29,6 @@ $result = $conn->query("SELECT * FROM contacts ORDER BY created_at DESC");
 <title>User Messages</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
 body { background:#f5f7fa; display:flex; min-height:100vh; }
@@ -83,7 +86,7 @@ body { background:#f5f7fa; display:flex; min-height:100vh; }
 .close-btn {
     position:absolute;
     top:15px; right:15px;
-    font-size:18px;
+    font-size:22px;
     background:none;
     border:none;
     cursor:pointer;
@@ -92,7 +95,7 @@ body { background:#f5f7fa; display:flex; min-height:100vh; }
 }
 .close-btn:hover{ color:#333; }
 .modal h2{ margin-bottom:10px; color:#333; }
-.modal p{ margin-bottom:15px; color:#555; }
+.modal p{ margin-bottom:15px; color:#555; word-wrap:break-word; }
 .modal small{ color:#999; font-size:13px; }
 
 /* RESPONSIVE */
@@ -112,6 +115,9 @@ body { background:#f5f7fa; display:flex; min-height:100vh; }
     <a href="add-story.php"><i class="fa fa-plus"></i> Add Story</a>
     <a href="edit-story.php"><i class="fa fa-book"></i> Manage Stories</a>
     <a href="add-category.php"><i class="fa fa-tags"></i> Add Category</a>
+    <a href="approve-users.php"><i class="fa fa-user-check"></i> Approve Users</a>
+    <a href="user-list.php"><i class="fa fa-users"></i> User/Admin List</a>
+    <a href="favorite-stories.php"><i class="fa fa-heart"></i> Favorite Stories</a>
     <a href="messages.php"><i class="fa fa-envelope"></i> User Messages</a>
     <a href="logout.php"><i class="fa fa-sign-out-alt"></i> Logout</a>
 </div>
@@ -143,7 +149,7 @@ body { background:#f5f7fa; display:flex; min-height:100vh; }
                         data-date="<?= $row['created_at'] ?>">
                         <td class="email-subject"><?= htmlspecialchars($row['name']) ?></td>
                         <td><?= htmlspecialchars($row['email']) ?></td>
-                        <td class="email-preview"><?= htmlspecialchars(substr($row['message'],0,60)) ?>...</td>
+                        <td class="email-preview"><?= htmlspecialchars(mb_strimwidth($row['message'],0,60,'...')) ?></td>
                         <td class="email-date"><?= $row['created_at'] ?></td>
                         <td>
                             <a href="messages.php?delete_id=<?= $row['id'] ?>" onclick="return confirm('Are you sure you want to delete this message?');">
@@ -183,8 +189,9 @@ const modalDate = document.getElementById('modalDate');
 
 document.querySelectorAll('.email-row').forEach(row => {
     row.addEventListener('click', e => {
-        // Don't open modal if trash icon clicked
+        // Skip modal if delete icon clicked
         if(e.target.classList.contains('delete-btn')) return;
+
         modalName.textContent = row.dataset.name;
         modalEmail.textContent = row.dataset.email;
         modalMessage.textContent = row.dataset.message;
@@ -194,7 +201,9 @@ document.querySelectorAll('.email-row').forEach(row => {
 });
 
 closeModal.addEventListener('click', () => modal.style.display = 'none');
-window.addEventListener('click', e => { if(e.target == modal) modal.style.display = 'none'; });
+window.addEventListener('click', e => {
+    if(e.target === modal) modal.style.display = 'none';
+});
 </script>
 
 </body>

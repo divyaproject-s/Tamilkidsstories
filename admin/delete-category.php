@@ -2,8 +2,9 @@
 session_start();
 include "../includes/db.php";
 
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+/* ===== ADMIN AUTH CHECK ===== */
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
     exit;
 }
 

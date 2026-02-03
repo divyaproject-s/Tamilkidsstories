@@ -2,9 +2,9 @@
 session_start();
 include "../includes/db.php";
 
-/* ===== ADMIN CHECK ===== */
-if (!isset($_SESSION['admin'])) {
-    header("Location: index.php");
+/* ===== ADMIN AUTH CHECK ===== */
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
     exit;
 }
 
@@ -12,7 +12,7 @@ $success = "";
 $error   = "";
 
 /* ===== PRESERVE VALUES ===== */
-$title = $content = $video_link = "";
+$title = $content = $video_link = $drive_link = "";
 $category_id = "";
 
 /* ===== FETCH CATEGORIES ===== */
@@ -24,9 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title       = trim($_POST['title']);
     $content     = trim($_POST['content']);
     $video_link  = trim($_POST['video_link']);
+    $drive_link  = trim($_POST['drive_link']);
     $category_id = (int)$_POST['category_id'];
 
-    if ($title === "" || $content === "" || !$category_id) {
+    if ($title=="" || $content=="" || $category_id=="") {
         $error = "Please fill all required fields!";
     }
     elseif (!isset($_FILES['image']) || $_FILES['image']['error'] !== 0) {
@@ -54,9 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             else {
 
                 $uploadDir = "../uploads/stories/";
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
                 $imgName = uniqid("story_", true) . "." . $ext;
 
@@ -64,21 +63,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
 
-                    /* ===== INSERT STORY (CORRECT) ===== */
+                    /* ===== FETCH CATEGORY NAME ===== */
+                    $catStmt = $conn->prepare("SELECT name FROM categories WHERE id=?");
+                    $catStmt->bind_param("i", $category_id);
+                    $catStmt->execute();
+                    $catRow = $catStmt->get_result()->fetch_assoc();
+                    $category_name = $catRow['name'];
+
+                    /* ===== INSERT STORY ===== */
                     $stmt = $conn->prepare(
                         "INSERT INTO stories 
-                        (title, slug, content, image, video_link, category_id)
-                        VALUES (?, ?, ?, ?, ?, ?)"
+                        (title, content, image, video_link, drive_link, category_id, slug)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)"
                     );
-
                     $stmt->bind_param(
-                        "sssssi",
+                        "sssssis",
                         $title,
-                        $slug,
                         $content,
                         $imgName,
                         $video_link,
-                        $category_id
+                        $drive_link,
+                        $category_id,
+                        $slug
                     );
 
                     if ($stmt->execute()) {
@@ -97,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,6 +199,11 @@ textarea{min-height:140px;}
 </div>
 
 <div class="form-group">
+    <label>Google Drive Link (Sharing URL)</label>
+    <input type="url" name="drive_link" placeholder="https://drive.google.com/file/d/..." value="<?= htmlspecialchars($drive_link) ?>">
+</div>
+
+<div class="form-group">
     <label>Story Image</label>
     <input type="file" name="image" accept="image/*" onchange="previewImage(event)" required>
     <div class="preview" id="preview">
@@ -199,7 +211,7 @@ textarea{min-height:140px;}
     </div>
 </div>
 
-<button class="btn" type="submit">Add Story</button>
+<button class="btn">Add Story</button>
 
 </form>
 </div>

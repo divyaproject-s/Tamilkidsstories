@@ -1,40 +1,63 @@
-Tamilkidsstories/
-│
-├── index.php                  # Home page (categories / latest stories)
-├── category.php               # Stories by category
-├── story.php                  # Single story page (slug or id)
-├── contact.php                # Contact form
-├── favourites.php             # Favourite stories page
-│
-├── includes/
-│   ├── db.php                 # Database connection
-│   ├── header.php             # Common header
-│   ├── footer.php             # Common footer
-│   └── functions.php          # Helper functions (slug, etc.)
+/project-root
 │
 ├── admin/
-│   ├── index.php              # Admin login
-│   ├── dashboard.php          # Admin dashboard
-│   ├── add-story.php          # Add new story
-│   ├── edit-story.php         # Edit story
-│   ├── delete-story.php       # Delete story
-│   ├── categories.php         # Manage categories
-│   ├── add-category.php       # Add category
-│   ├── edit-category.php      # Edit category
-│   ├── delete-category.php    # Delete category
-│   ├── contacts.php           # View contact messages
-│   └── logout.php             # Admin logout
-│
-├── uploads/
-│   ├── stories/               # Story images
-│   └── categories/            # Category images
+│   ├── auth.php
+│   ├── admin_session_check.php
+│   ├── dashboard.php
+│   ├── manage-users.php
+│   ├── approve-users.php
+│   ├── manage-stories.php
+│   ├── add-story.php
+│   ├── edit-story.php
+│   ├── add-category.php
+│   ├── edit-category.php
+│   ├── delete-category.php
+│   ├── favorites.php
+│   ├── messages.php
+│   └── logout.php
 │
 ├── assets/
 │   ├── css/
-│   │   └── style.css          # Main styles
+│   │   └── style.css
+│   │
 │   ├── js/
-│   │   └── main.js            # JavaScript
+│   │   ├── script.js
+│   │   └── guest-timer.js
+│   │
 │   └── images/
-│       └── logo.png           # Static images
+│       ├── logo.png
+│       └── banners/
 │
-└── tamilkidsstories.sql       # Database backup
+├── includes/
+│   ├── config.php
+│   ├── db.php
+│   ├── header.php
+│   ├── navbar.php
+│   └── footer.php
+│
+├── uploads/
+│   ├── categories/
+│   │   └── category-images/
+│   │
+│   └── stories/
+│       ├── images/
+│       └── videos/
+│                
+├── index.php
+├── about.php
+├── contact.php
+├── login.php
+├── register.php
+├── logout.php
+├── category.php
+├── stories.php
+├── story.php
+├── story-details.php
+├── favorites.php
+├── favorites-list.php
+│
+├── database.sql
+│
+├── .gitignore
+├── hash.php
+└── README.md
